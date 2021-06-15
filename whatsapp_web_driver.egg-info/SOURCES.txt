@@ -1,0 +1,11 @@
+LICENSE
+README.md
+setup.py
+whatsapp_web_driver/__init__.py
+whatsapp_web_driver/contact_chat.py
+whatsapp_web_driver/custom_errors.py
+whatsapp_web_driver/whatsapp_web_driver.py
+whatsapp_web_driver.egg-info/PKG-INFO
+whatsapp_web_driver.egg-info/SOURCES.txt
+whatsapp_web_driver.egg-info/dependency_links.txt
+whatsapp_web_driver.egg-info/top_level.txt
