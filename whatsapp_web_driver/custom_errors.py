@@ -22,3 +22,16 @@ class WhatsappNotLoggedIn(Exception):
 
     def __str__(self):
         return f'{self.message}\nLog in to web whatsapp by scaning the barcode and then try again.'
+
+class MaxTimeOut(Exception):
+    """
+    Exception raised when some element or page takes more time than
+    max_time to load in. Indecating something is wrong with the Internet.
+    """
+
+    def __init__(self, message="Page took too much time to load."):
+        self.message = message
+        super().__init__(self.message)
+
+    def __str__(self):
+        return f'{self.message}\nTry checking your Internet connection.'
