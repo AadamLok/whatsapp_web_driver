@@ -9,7 +9,7 @@ class ChromeDriverNotWorking(Exception):
         super().__init__(self.message)
 
     def __str__(self):
-        return f'Chrome driver passed in the {self.place} is not working.\nTry checking the path of chrome driver, or check in if your instaaled chrome version matches with driver version.'
+        return f'Chrome driver passed in the {self.place} is not working.\nTry checking the path of chrome driver, or check in if your installed chrome version matches with driver version.'
 
 class WhatsappNotLoggedIn(Exception):
     """

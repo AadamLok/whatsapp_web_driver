@@ -26,6 +26,9 @@ class WhatsappWebDriver():
     
     def start(self):
         self.driver.get("https://web.whatsapp.com/")
+        self.wait_for_load()
+
+    def wait_for_load(self):
         try:
             WebDriverWait(self.driver, self.max_wait).until(
                 presence_of_any_one_element_located(
@@ -37,6 +40,7 @@ class WhatsappWebDriver():
             raise MaxTimeOut()
 
     def is_logged_in(self):
+        self.wait_for_load()
         try:
             self.driver.find_element(By.XPATH, """//*[@id="app"]/div[1]/div/div[2]/div[1]/div/div[2]/div/canvas""")
             return False
@@ -44,7 +48,7 @@ class WhatsappWebDriver():
             return True
 
     def reload_page(self):
-        self.driver.get("https://web.whatsapp.com/")
+        self.start()
 
     def open_profile_page(self):
         self.reload_page()

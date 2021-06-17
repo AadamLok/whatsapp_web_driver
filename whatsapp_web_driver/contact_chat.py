@@ -1,23 +1,92 @@
+import time
+from selenium.webdriver.common.action_chains import ActionChains
+import win32clipboard
+from whatsapp_web_driver.custom_errors import MaxTimeOut, WhatsappNotLoggedIn
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
 class ContactChat:
-    def __init__(self, WhatsappWebDriver, name_or_number, index=0):
+    def __init__(self, WhatsappWebDriver, name_or_number):
         self.WWD = WhatsappWebDriver
         self.name_or_number = name_or_number
-        self.index = 0
         self.current_message_id = ""
+        self.title = None
 
+    #Needs Work
     def open_chat(self):
-        #TODO open chat with info
-        # in self, raise apropriate
-        # exceptions, return true if
-        # successful
-        return False
+        self.WWD.reload_page()
+        
+        if not self.WWD.is_logged_in():
+            raise WhatsappNotLoggedIn()
+        
+        #first_result_XPATH = """//*[@id="pane-side"]/div[1]/div/div/div[6]/div/div/div[2]/div[1]/div[1]/span/span"""
+        search_bar_XPATH = """//*[@id="side"]/div[1]/div/label"""
+        #text_chats_XPATH = """//div[contains(@class, '-lcoh') and contains(*,'Chats')]"""
+        all_results = """//*[@id="pane-side"]/div[1]/div/div"""
+        msg_box_XPATH = """//*[@id="main"]/footer/div[1]/div[2]"""
+        title_XPATH = """//*[@id="main"]/header/div[2]/div/div/span"""
+        try:
+            search_bar = WebDriverWait(self.WWD.driver, self.WWD.max_wait).until(
+                EC.visibility_of_element_located((By.XPATH, search_bar_XPATH))
+            )
+            ActionChains(self.WWD.driver).move_to_element(search_bar).click().perform()
+
+            win32clipboard.OpenClipboard()
+            win32clipboard.EmptyClipboard()
+            win32clipboard.SetClipboardText(self.name_or_number, win32clipboard.CF_UNICODETEXT)
+            win32clipboard.CloseClipboard()
+
+            paste_action = ActionChains(self.WWD.driver).key_down(Keys.CONTROL).send_keys("v").key_up(Keys.CONTROL)
+            paste_action.perform()
+
+            time.sleep(2)
+
+            all_results = self.WWD.driver.find_element(By.XPATH, all_results)
+            all_results.find_elements(By.XPATH, """//*[@class="_2aBzC"]""")[-1].click()
+
+            self.title = WebDriverWait(self.WWD.driver, self.WWD.max_wait).until(
+                EC.visibility_of_element_located((By.XPATH,title_XPATH))
+            ).text if self.title == None else self.title
+
+            WebDriverWait(self.WWD.driver, self.WWD.max_wait).until(
+                EC.visibility_of_element_located((By.XPATH,msg_box_XPATH))
+            ).click()
+        except TimeoutException:
+            raise MaxTimeOut()
+        except NoSuchElementException:
+            raise #TODO
+
+        return True
 
     def send_message(self, message, tag_message_id=None):
         self.open_chat()
-        #TODO send msg specified
-        #raise apropriate erros
-        #return True if successful
-        return False
+
+        title_XPATH = """//*[@id="main"]/header/div[2]/div/div/span"""
+        
+        try:
+            while WebDriverWait(self.WWD.driver, self.WWD.max_wait).until(
+                EC.visibility_of_element_located((By.XPATH,title_XPATH))
+            ).text != self.title:
+                self.open_chat()
+        
+            win32clipboard.OpenClipboard()
+            win32clipboard.EmptyClipboard()
+            win32clipboard.SetClipboardText(message, win32clipboard.CF_UNICODETEXT)
+            win32clipboard.CloseClipboard()
+
+            paste_action = ActionChains(self.WWD.driver).key_down(Keys.CONTROL).send_keys("v").key_up(Keys.CONTROL)
+            paste_action.perform()
+            
+            WebDriverWait(self.WWD.driver, self.WWD.max_wait).until(
+                EC.visibility_of_element_located((By.XPATH,"""//*[@id="main"]/footer/div[1]/div[3]/button"""))
+            ).click()
+            #TODO check previous msg you send is sent or not
+        except TimeoutException:
+            raise MaxTimeOut()
+
+        return True
 
     def send_contact(self, name_or_number, index=0):
         self.open_chat()

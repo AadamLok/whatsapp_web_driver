@@ -1,3 +1,4 @@
+from whatsapp_web_driver.contact_chat import ContactChat
 from whatsapp_web_driver.custom_errors import MaxTimeOut
 from whatsapp_web_driver import WhatsappWebDriver, ChromeDriverNotWorking, MaxTimeOut
 import pytest
@@ -29,6 +30,14 @@ def test_get_status_and_set_status():
     pytest.WWD.set_status(new_status)
     assert pytest.WWD.get_status() == new_status
     pytest.WWD.set_status(old_status)
+
+def test_open_chat():
+    pytest.test_contact = ContactChat(pytest.WWD, "9428556152")
+    pytest.test_contact.open_chat()
+
+def test_send_msg():
+    for i in range(10):
+        pytest.test_contact.send_message("Test msg "+str(i))
 
 def test_close():
     assert pytest.WWD.close() == True, "Close the driver"
