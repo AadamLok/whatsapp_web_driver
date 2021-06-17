@@ -22,25 +22,25 @@ def test_is_logged_in():
         if time.time()-start_time > 20:
             pytest.fail("Checking for web whatsapp logged in failed.")
 
-# def test_get_status_and_set_status():
-#     old_status = pytest.WWD.get_status()
-#     print(old_status)
-#     new_status = "😁text1😜text2😝"
-#     pytest.WWD.set_status(new_status)
-#     assert pytest.WWD.get_status() == new_status
-#     pytest.WWD.set_status(old_status)
+def test_get_status_and_set_status():
+    old_status = pytest.WWD.get_status()
+    print(old_status)
+    new_status = "😁text1😜text2😝"
+    pytest.WWD.set_status(new_status)
+    assert pytest.WWD.get_status() == new_status
+    pytest.WWD.set_status(old_status)
 
-# def test_open_chat():
-#     pytest.test_contact = ContactChat(pytest.WWD, "9428556152")
-#     pytest.test_contact.open_chat()
+def test_open_chat():
+    pytest.test_contact = ContactChat(pytest.WWD, "9428556152")
+    pytest.test_contact.open_chat()
 
 def test_Wrong_contactDetail():
     with pytest.raises(NoContactFound):
         ContactChat(pytest.WWD, "adjsh").open_chat()
 
-# def test_send_msg():
-#     for i in range(10):
-#         pytest.test_contact.send_message("Test msg "+str(i))
+def test_send_msg():
+    for i in range(10):
+        pytest.test_contact.send_message("Test msg "+str(i))
 
 def test_close():
     assert pytest.WWD.close() == True, "Close the driver"
