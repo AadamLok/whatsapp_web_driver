@@ -5,3 +5,7 @@
 */__pycache__
 
 /whatsapp_web_driver.egg-info
+
+/.vscode
+/.pytest_cache
+/.eggs

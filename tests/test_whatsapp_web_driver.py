@@ -1,6 +1,5 @@
-from whatsapp_web_driver.contact_chat import ContactChat
-from whatsapp_web_driver.custom_errors import MaxTimeOut
-from whatsapp_web_driver import WhatsappWebDriver, ChromeDriverNotWorking, MaxTimeOut
+
+from whatsapp_web_driver import WhatsappWebDriver, ChromeDriverNotWorking, MaxTimeOut, NoContactFound, ContactChat
 import pytest
 import time
 
@@ -34,6 +33,10 @@ def test_get_status_and_set_status():
 def test_open_chat():
     pytest.test_contact = ContactChat(pytest.WWD, "9428556152")
     pytest.test_contact.open_chat()
+
+def test_Wrong_contactDetail():
+    with pytest.raises(NoContactFound):
+        ContactChat(pytest.WWD, "adjsh").open_chat()
 
 def test_send_msg():
     for i in range(10):
