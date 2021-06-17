@@ -1,7 +1,7 @@
 import time
 from selenium.webdriver.common.action_chains import ActionChains
 import win32clipboard
-from whatsapp_web_driver.custom_errors import MaxTimeOut, WhatsappNotLoggedIn
+from whatsapp_web_driver.custom_errors import MaxTimeOut, WhatsappNotLoggedIn, NoContactFound
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -21,9 +21,7 @@ class ContactChat:
         if not self.WWD.is_logged_in():
             raise WhatsappNotLoggedIn()
         
-        #first_result_XPATH = """//*[@id="pane-side"]/div[1]/div/div/div[6]/div/div/div[2]/div[1]/div[1]/span/span"""
         search_bar_XPATH = """//*[@id="side"]/div[1]/div/label"""
-        #text_chats_XPATH = """//div[contains(@class, '-lcoh') and contains(*,'Chats')]"""
         all_results = """//*[@id="pane-side"]/div[1]/div/div"""
         msg_box_XPATH = """//*[@id="main"]/footer/div[1]/div[2]"""
         title_XPATH = """//*[@id="main"]/header/div[2]/div/div/span"""
@@ -41,7 +39,7 @@ class ContactChat:
             paste_action = ActionChains(self.WWD.driver).key_down(Keys.CONTROL).send_keys("v").key_up(Keys.CONTROL)
             paste_action.perform()
 
-            time.sleep(2)
+            time.sleep(5)
 
             all_results = self.WWD.driver.find_element(By.XPATH, all_results)
             all_results.find_elements(By.XPATH, """//*[@class="_2aBzC"]""")[-1].click()
@@ -56,7 +54,7 @@ class ContactChat:
         except TimeoutException:
             raise MaxTimeOut()
         except NoSuchElementException:
-            raise #TODO
+            raise NoContactFound()
 
         return True
 
@@ -90,7 +88,7 @@ class ContactChat:
 
     def send_contact(self, name_or_number, index=0):
         self.open_chat()
-        #TODO send contact to this chat
+        #TODO send contact to this chat,Aadam
 
     def send_document(self, path, tag_message_id=None):
         self.open_chat()
@@ -98,13 +96,13 @@ class ContactChat:
         # to clipboard and perfom paste
         # in the send box of chat
         # raise relevant exception
-        # return True if succeful
+        # return True if succeful, Murtaza
         return False
 
     def get_new_msg_id(self):
         self.open_chat()
         #TODO get the message ID of the last
-        # message in the chat
+        # message in the chat, Aadam
         return None
 
     def set_current_msg_id(self, message_id):
@@ -117,21 +115,25 @@ class ContactChat:
         return None
 
     def get_message_from_id(self, message_id):
-        return None
+        return None 
 
     def is_group(self):
+        #Murtaza
         return None
 
     def is_online(self):
+        #Murtaza
         return None
 
     def get_profile_pic(self):
         return None
 
     def block_chat(self):
+        #Murtaza
         return None
 
     def delete_chat(self):
+        #Murtaza
         return None
 
     def delete_message(self, message_id, for_everyone=False):

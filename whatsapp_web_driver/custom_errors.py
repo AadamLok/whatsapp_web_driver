@@ -35,3 +35,16 @@ class MaxTimeOut(Exception):
 
     def __str__(self):
         return f'{self.message}\nTry checking your Internet connection.'
+        
+        
+class NoContactFound(Exception):
+    """
+    Exception raised when contact is not found.
+    Indicating that no such contact was present.
+    """
+    def __init__(self, message="Contact not found."):
+        self.message = message
+        super().__init__(self.message)
+
+    def __str__(self):
+        return f'{self.message}\nTry entering more accurate contact detail as in Name or Number pre-existing in your contacts.'
