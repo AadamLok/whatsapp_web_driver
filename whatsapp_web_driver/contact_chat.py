@@ -118,8 +118,34 @@ class ContactChat:
         return None 
 
     def is_group(self):
-        #Murtaza
-        return None
+        self.open_chat()
+
+        title_XPATH = """//*[@id="main"]/header/div[2]/div/div/span"""
+
+        try:
+            while WebDriverWait(self.WWD.driver, self.WWD.max_wait).until(
+                EC.visibility_of_element_located((By.XPATH,title_XPATH))
+            ).text != self.title:
+                self.open_chat()
+            
+            title = self.WWD.driver.find_element(By.XPATH, title_XPATH).click()
+            time.sleep(2)
+
+            test1 = """/html/body/div/div[1]/div[1]/div[2]/div[3]/span/div[1]/span/div[1]/header/div/div[2]"""
+            test = WebDriverWait(self.WWD.driver, self.WWD.max_wait).until(
+               EC.visibility_of_element_located((By.XPATH,test1))
+            ).text
+
+            if test == "Group info":
+                return True
+            else:
+                return False
+
+        except TimeoutException:
+            raise MaxTimeOut()
+        
+
+        
 
     def is_online(self):
         #Murtaza
