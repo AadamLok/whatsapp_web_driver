@@ -165,18 +165,23 @@ class ContactChat:
                 EC.visibility_of_element_located((By.XPATH,title_XPATH))
             ).text != self.title:
                 self.open_chat()
-                time.sleep(1.5)
+            time.sleep(1.5)
 
             list = """//*[@id="main"]/header/div[3]/div/div[2]/div/div"""
-            self.WWD.driver.find_element(By.XPATH, list).click()
-            time.sleep(1.5)
+            WebDriverWait(self.WWD.driver, self.WWD.max_wait).until(
+                EC.visibility_of_element_located((By.XPATH,list))
+            ).click()
+            
 
             delete_btn = """//*[@id="app"]/div[1]/span[4]/div/ul/div/div/li[5]"""
-            self.WWD.driver.find_element(By.XPATH, delete_btn).click()
-            time.sleep(1.5)
+            WebDriverWait(self.WWD.driver, self.WWD.max_wait).until(
+                EC.visibility_of_element_located((By.XPATH,delete_btn))
+            ).click()
 
             confirm_del = """//*[@id="app"]/div[1]/span[2]/div[1]/div/div/div/div/div/div[2]/div[2]/div"""
-            self.WWD.driver.find_element(By.XPATH, confirm_del).click()
+            WebDriverWait(self.WWD.driver, self.WWD.max_wait).until(
+                EC.visibility_of_element_located((By.XPATH,confirm_del))
+            ).click()
 
 
         except TimeoutException:
