@@ -49,6 +49,9 @@ def test_delete_chat():
     pytest.test_contact = ContactChat(pytest.WWD, "9428556152")
     pytest.test_contact.delete_chat()
 
+def test_block_chat():
+    pytest.test_contact = ContactChat(pytest.WWD, "Ma")
+    pytest.test_contact.block_chat()
 
 def test_send_msg():
     for i in range(10):

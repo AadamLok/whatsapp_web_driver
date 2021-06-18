@@ -152,8 +152,34 @@ class ContactChat:
         return None
 
     def block_chat(self):
-        #Murtaza
-        return None
+        self.open_chat()
+
+        title_XPATH = """//*[@id="main"]/header/div[2]/div/div/span"""
+
+        try:
+            while WebDriverWait(self.WWD.driver, self.WWD.max_wait).until(
+                EC.visibility_of_element_located((By.XPATH,title_XPATH))
+            ).text != self.title:
+                self.open_chat()
+            
+            title = self.WWD.driver.find_element(By.XPATH, title_XPATH).click()
+            time.sleep(2)
+
+            block = """//*[@id="app"]/div[1]/div[1]/div[2]/div[3]/span/div[1]/span/div[1]/div/section/div[6]/div/div[2]"""
+            target = self.WWD.driver.find_element_by_xpath(block)
+            target.location_once_scrolled_into_view
+
+            WebDriverWait(self.WWD.driver, self.WWD.max_wait).until(
+                EC.visibility_of_element_located((By.XPATH,block))
+            ).click()
+
+            confirm_block = """//*[@id="app"]/div[1]/span[2]/div[1]/div/div/div/div/div/div[2]/div[2]/div"""
+            WebDriverWait(self.WWD.driver, self.WWD.max_wait).until(
+                EC.visibility_of_element_located((By.XPATH,confirm_block))
+            ).click()
+
+        except TimeoutException:
+            MaxTimeOut()
 
     def delete_chat(self):
         self.open_chat()
