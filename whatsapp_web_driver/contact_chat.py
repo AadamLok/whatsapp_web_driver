@@ -1,7 +1,7 @@
 import time
 from selenium.webdriver.common.action_chains import ActionChains
 import win32clipboard
-from whatsapp_web_driver.custom_errors import MaxTimeOut, WhatsappNotLoggedIn, NoContactFound
+from whatsapp_web_driver.custom_errors import MaxTimeOut, WhatsappNotLoggedIn, NoContactFound, Already_Blocked
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -151,7 +151,7 @@ class ContactChat:
     def get_profile_pic(self):
         return None
 
-    def block_chat(self):
+    def isBlocked(self):
         self.open_chat()
 
         title_XPATH = """//*[@id="main"]/header/div[2]/div/div/span"""
@@ -161,25 +161,50 @@ class ContactChat:
                 EC.visibility_of_element_located((By.XPATH,title_XPATH))
             ).text != self.title:
                 self.open_chat()
+
+            msg_box_XPATH = """//*[@id="main"]/footer/div[1]/div[2]"""
+            time.sleep(3)
             
-            title = self.WWD.driver.find_element(By.XPATH, title_XPATH).click()
-            time.sleep(2)
-
-            block = """//*[@id="app"]/div[1]/div[1]/div[2]/div[3]/span/div[1]/span/div[1]/div/section/div[6]/div/div[2]"""
-            target = self.WWD.driver.find_element_by_xpath(block)
-            target.location_once_scrolled_into_view
-
-            WebDriverWait(self.WWD.driver, self.WWD.max_wait).until(
-                EC.visibility_of_element_located((By.XPATH,block))
-            ).click()
-
-            confirm_block = """//*[@id="app"]/div[1]/span[2]/div[1]/div/div/div/div/div/div[2]/div[2]/div"""
-            WebDriverWait(self.WWD.driver, self.WWD.max_wait).until(
-                EC.visibility_of_element_located((By.XPATH,confirm_block))
-            ).click()
+            if EC.visibility_of_element_located((By.XPATH,msg_box_XPATH)):
+                return False
+            return True
 
         except TimeoutException:
-            MaxTimeOut()
+            raise MaxTimeOut()
+        
+
+    def block_chat(self):
+        self.open_chat()
+
+        title_XPATH = """//*[@id="main"]/header/div[2]/div/div/span"""
+        if self.isBlocked() == False:
+            try:
+                while WebDriverWait(self.WWD.driver, self.WWD.max_wait).until(
+                    EC.visibility_of_element_located((By.XPATH,title_XPATH))
+                ).text != self.title:
+                    self.open_chat()
+                
+                title = self.WWD.driver.find_element(By.XPATH, title_XPATH).click()
+                time.sleep(2)
+
+                block = """//*[@id="app"]/div[1]/div[1]/div[2]/div[3]/span/div[1]/span/div[1]/div/section/div[6]/div/div[2]"""
+                target = self.WWD.driver.find_element_by_xpath(block)
+                target.location_once_scrolled_into_view
+
+                WebDriverWait(self.WWD.driver, self.WWD.max_wait).until(
+                    EC.visibility_of_element_located((By.XPATH,block))
+                ).click()
+
+                confirm_block = """//*[@id="app"]/div[1]/span[2]/div[1]/div/div/div/div/div/div[2]/div[2]/div"""
+                WebDriverWait(self.WWD.driver, self.WWD.max_wait).until(
+                    EC.visibility_of_element_located((By.XPATH,confirm_block))
+                ).click()
+
+            except TimeoutException:
+                raise MaxTimeOut()
+        else:
+            raise Already_Blocked()
+
 
     def delete_chat(self):
         self.open_chat()

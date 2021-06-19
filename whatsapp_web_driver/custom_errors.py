@@ -48,3 +48,15 @@ class NoContactFound(Exception):
 
     def __str__(self):
         return f'{self.message}\nTry entering more accurate contact detail as in Name or Number pre-existing in your contacts.'
+
+class Already_Blocked(Exception):
+    """
+    Exception raised when contact is already blocked.
+    Indicating that the current contact is blocked.
+    """
+    def __init__(self, message="Contact is bloced."):
+        self.message = message
+        super().__init__(self.message)
+
+    def __str__(self):
+        return f'{self.message}\nTry entering a contact which is not blocked already.'
