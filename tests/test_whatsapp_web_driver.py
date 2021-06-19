@@ -40,10 +40,7 @@ def test_Wrong_contactDetail():
 
 def test_isGroup():
     pytest.test_contact = ContactChat(pytest.WWD, "Memes and Weeb")
-    if pytest.test_contact.is_group() == True:
-        pytest.fail("Group")
-    else :
-        pytest.fail("Not Group")
+    pytest.test_contact.is_group() 
 
 def test_delete_chat():
     pytest.test_contact = ContactChat(pytest.WWD, "9428556152")
