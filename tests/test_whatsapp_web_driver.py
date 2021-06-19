@@ -51,6 +51,10 @@ def test_block_chat():
     if pytest.test_contact.isBlocked() == True:
         pytest.fail("It worked")
 
+def test_clear_message():
+    pytest.test_contact = ContactChat(pytest.WWD, "Ma")
+    pytest.test_contact.clear_message()
+
 def test_send_msg():
     for i in range(10):
         pytest.test_contact.send_message("Test msg "+str(i))

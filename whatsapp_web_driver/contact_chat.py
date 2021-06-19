@@ -238,6 +238,38 @@ class ContactChat:
         except TimeoutException:
             raise MaxTimeOut()
 
+    def clear_message(self):
+        self.open_chat()
+
+        title_XPATH = """//*[@id="main"]/header/div[2]/div/div/span"""
+
+        try:
+            while WebDriverWait(self.WWD.driver, self.WWD.max_wait).until(
+                EC.visibility_of_element_located((By.XPATH,title_XPATH))
+            ).text != self.title:
+                self.open_chat()
+            time.sleep(1.5)
+
+            list = """//*[@id="main"]/header/div[3]/div/div[2]/div/div"""
+            WebDriverWait(self.WWD.driver, self.WWD.max_wait).until(
+                EC.visibility_of_element_located((By.XPATH,list))
+            ).click()
+            
+
+            clear_btn = """//*[@id="app"]/div[1]/span[4]/div/ul/div/div/li[4]"""
+            WebDriverWait(self.WWD.driver, self.WWD.max_wait).until(
+                EC.visibility_of_element_located((By.XPATH,clear_btn))
+            ).click()
+
+            confirm_clear = """//*[@id="app"]/div[1]/span[2]/div[1]/div/div/div/div/div/div[2]/div[2]/div"""
+            WebDriverWait(self.WWD.driver, self.WWD.max_wait).until(
+                EC.visibility_of_element_located((By.XPATH,confirm_clear))
+            ).click()
+
+
+        except TimeoutException:
+            raise MaxTimeOut()
+
     def delete_message(self, message_id, for_everyone=False):
         return None
 
