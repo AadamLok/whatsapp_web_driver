@@ -159,7 +159,7 @@ class ContactChat:
                 online_xpath = """//*[@id="main"]/header/div[2]/div[2]/span"""
                 if WebDriverWait(self.WWD.driver, self.WWD.max_wait).until(
                     EC.visibility_of_element_located((By.XPATH,online_xpath))
-                ).text == "online":
+                ).text.strip() == "online":
                     return True
                 else:
                     return False
