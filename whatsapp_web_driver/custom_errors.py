@@ -72,3 +72,15 @@ class NotContact(Exception):
 
     def __str__(self):
         return f'{self.message}\nTry entering a contact and not a group.'
+
+class NotProvided(Exception):
+    """
+    Exception raised when contact does not provided online details.
+    Indicating that the current contact might be absent.
+    """
+    def __init__(self, message="Cant provide online detail."):
+        self.message = message
+        super().__init__(self.message)
+
+    def __str__(self):
+        return f'{self.message}\nTry entering a contact with presence of sharing online detail.'

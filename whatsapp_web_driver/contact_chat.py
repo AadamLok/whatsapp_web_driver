@@ -1,7 +1,7 @@
 import time
 from selenium.webdriver.common.action_chains import ActionChains
 import win32clipboard
-from whatsapp_web_driver.custom_errors import MaxTimeOut, WhatsappNotLoggedIn, NoContactFound, Already_Blocked, NotContact
+from whatsapp_web_driver.custom_errors import MaxTimeOut, WhatsappNotLoggedIn, NoContactFound, Already_Blocked, NotContact, NotProvided
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -168,6 +168,8 @@ class ContactChat:
 
         except TimeoutException:
             raise MaxTimeOut()
+        except NoSuchElementException:
+            raise NotProvided()
 
     def get_profile_pic(self):
         return None
