@@ -1,7 +1,7 @@
 import time
 from selenium.webdriver.common.action_chains import ActionChains
 import win32clipboard
-from whatsapp_web_driver.custom_errors import MaxTimeOut, WhatsappNotLoggedIn, NoContactFound, Already_Blocked
+from whatsapp_web_driver.custom_errors import MaxTimeOut, WhatsappNotLoggedIn, NoContactFound, Already_Blocked, NotContact
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -145,8 +145,29 @@ class ContactChat:
             raise MaxTimeOut()
         
     def is_online(self):
-        #Murtaza
-        return None
+        self.open_chat()
+
+        title_XPATH = """//*[@id="main"]/header/div[2]/div/div/span"""
+
+        try:
+            while WebDriverWait(self.WWD.driver, self.WWD.max_wait).until(
+                EC.visibility_of_element_located((By.XPATH,title_XPATH))
+            ).text != self.title:
+                self.open_chat()
+
+            if self.is_group() == False:
+                online_xpath = """//*[@id="main"]/header/div[2]/div[2]/span"""
+                if WebDriverWait(self.WWD.driver, self.WWD.max_wait).until(
+                    EC.visibility_of_element_located((By.XPATH,online_xpath))
+                ).text == "online":
+                    return True
+                else:
+                    return False
+            else:
+                raise NotContact() 
+
+        except TimeoutException:
+            raise MaxTimeOut()
 
     def get_profile_pic(self):
         return None

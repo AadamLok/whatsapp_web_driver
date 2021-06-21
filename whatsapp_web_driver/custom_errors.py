@@ -40,23 +40,35 @@ class MaxTimeOut(Exception):
 class NoContactFound(Exception):
     """
     Exception raised when contact is not found.
-    Indicating that no such contact was present.
+    Indicating that no such contact/group was present.
     """
-    def __init__(self, message="Contact not found."):
+    def __init__(self, message="Contact/Group not found."):
         self.message = message
         super().__init__(self.message)
 
     def __str__(self):
-        return f'{self.message}\nTry entering more accurate contact detail as in Name or Number pre-existing in your contacts.'
+        return f'{self.message}\nTry entering more accurate contact/Group detail as in Name or Number pre-existing in your contacts.'
 
 class Already_Blocked(Exception):
     """
     Exception raised when contact is already blocked.
     Indicating that the current contact is blocked.
     """
-    def __init__(self, message="Contact is bloced."):
+    def __init__(self, message="Contact is blocked."):
         self.message = message
         super().__init__(self.message)
 
     def __str__(self):
         return f'{self.message}\nTry entering a contact which is not blocked already.'
+
+class NotContact(Exception):
+    """
+    Exception raised when contact is not provided.
+    Indicating that the current tab is of group.
+    """
+    def __init__(self, message="Group is provided."):
+        self.message = message
+        super().__init__(self.message)
+
+    def __str__(self):
+        return f'{self.message}\nTry entering a contact and not a group.'
