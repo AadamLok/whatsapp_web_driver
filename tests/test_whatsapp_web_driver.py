@@ -59,6 +59,10 @@ def test_send_msg():
     for i in range(10):
         pytest.test_contact.send_message("Test msg "+str(i))
 
+def test_send_doc():
+    pytest.test_contact = ContactChat(pytest.WWD, "Aadam")
+    pytest.test_contact.send_document("C:\\Users\\Murtaza\\Desktop\\college things\\g.jpeg")
+
 def test_isOnline():
     pytest.test_contact = ContactChat(pytest.WWD, "Memes & Weeb")
     pytest.test_contact.is_online()

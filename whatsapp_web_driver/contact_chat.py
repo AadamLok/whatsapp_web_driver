@@ -1,6 +1,8 @@
 import time
+import os
 from selenium.webdriver.common.action_chains import ActionChains
 import win32clipboard
+import pyautogui
 from whatsapp_web_driver.custom_errors import MaxTimeOut, WhatsappNotLoggedIn, NoContactFound, Already_Blocked, NotContact, NotProvided
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
@@ -92,12 +94,32 @@ class ContactChat:
 
     def send_document(self, path, tag_message_id=None):
         self.open_chat()
-        #TODO copy the file in path
-        # to clipboard and perfom paste
-        # in the send box of chat
-        # raise relevant exception
-        # return True if succeful, Murtaza
-        return False
+        title_XPATH = """//*[@id="main"]/header/div[2]/div/div/span"""
+        try:
+            while WebDriverWait(self.WWD.driver, self.WWD.max_wait).until(
+                EC.visibility_of_element_located((By.XPATH,title_XPATH))
+            ).text != self.title:
+                self.open_chat()
+
+            WebDriverWait(self.WWD.driver, self.WWD.max_wait).until(
+                EC.visibility_of_element_located((By.XPATH,"""//*[@id="main"]/footer/div[1]/div[1]/div[2]/div/div"""))
+            ).click()  #attach button
+
+            WebDriverWait(self.WWD.driver, self.WWD.max_wait).until(
+                EC.visibility_of_element_located((By.XPATH,"""//footer/div[1]/div[1]/div[2]/div/span/div[1]/div/ul/li[1]/button"""))
+            ).click()  #upload button
+            
+            time.sleep(4)
+            pyautogui.write(path) 
+            pyautogui.press('return')
+
+            time.sleep(4)
+            WebDriverWait(self.WWD.driver, self.WWD.max_wait).until(
+                EC.visibility_of_element_located((By.XPATH,"""//span/div[1]/span/div[1]/div/div[2]/span/div/div"""))
+            ).click()  #Doesnt Work
+
+        except TimeoutException:
+            raise MaxTimeOut()
 
     def get_new_msg_id(self):
         self.open_chat()
