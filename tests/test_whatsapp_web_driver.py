@@ -38,9 +38,34 @@ def test_Wrong_contactDetail():
     with pytest.raises(NoContactFound):
         ContactChat(pytest.WWD, "adjsh").open_chat()
 
+def test_isGroup():
+    pytest.test_contact = ContactChat(pytest.WWD, "Memes and Weeb")
+    pytest.test_contact.is_group() 
+
+def test_delete_chat():
+    pytest.test_contact = ContactChat(pytest.WWD, "9428556152")
+    pytest.test_contact.delete_chat()
+
+def test_block_chat():
+    pytest.test_contact = ContactChat(pytest.WWD, "Ma")
+    if pytest.test_contact.isBlocked() == True:
+        pytest.fail("It worked")
+
+def test_clear_message():
+    pytest.test_contact = ContactChat(pytest.WWD, "Ma")
+    pytest.test_contact.clear_message()
+
 def test_send_msg():
     for i in range(10):
         pytest.test_contact.send_message("Test msg "+str(i))
+
+def test_send_doc():
+    pytest.test_contact = ContactChat(pytest.WWD, "Aadam")
+    pytest.test_contact.send_document("C:\\Users\\Murtaza\\Desktop\\college things\\g.jpeg")
+
+def test_isOnline():
+    pytest.test_contact = ContactChat(pytest.WWD, "Memes & Weeb")
+    pytest.test_contact.is_online()
 
 def test_close():
     assert pytest.WWD.close() == True, "Close the driver"

@@ -7,7 +7,7 @@ setup(
     description='Enables the user to easily create their own whatsapp bot.',
     author='Aadam Lokhandwala, Murtaza Cyclewala',
     license='Apache 2.0',
-    install_requires=['selenium','pywin32'],
+    install_requires=['selenium','pywin32','pyautogui'],
     setup_requires=['pytest-runner'],
     tests_require=['pytest'],
     test_suite='tests',
